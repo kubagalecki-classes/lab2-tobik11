@@ -17,9 +17,9 @@ public:
 
     ResourceManager& operator=(const ResourceManager& rs)
     {
-        if(&rs == this) // prevent self-copying
+        if (&rs == this) // prevent self-copying
         {
-          return *this;
+            return *this;
         }
         cout << "copying_operator" << endl;
         res = rs.res;
@@ -35,13 +35,20 @@ public:
 
     ResourceManager& operator=(ResourceManager&& rs)
     {
-      if(&rs == this) // prevent self-copying
-      {
+        if (&rs == this) // prevent self-copying
+        {
+            cout << "selfMoving!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+            return *this;
+        }
+        else if (!(res == nullptr)) {
+            cout << "deleting!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+            delete res;
+        }
+        cout << "moving_operator" << endl;
+        res = move(rs.res); // wywola konstruktor przenoszacy
+
+        rs.res = nullptr;
         return *this;
-      }
-      cout << "moving_operator" << endl;
-      res = move(rs.res); // wywola konstruktor przenoszacy
-      return *this;
     }
 
     ~ResourceManager()
@@ -60,11 +67,12 @@ private:
 int main()
 {
     ResourceManager a{};
-
+    cout << a.get() << endl;
     // ResourceManager b{move(a)};
 
-    ResourceManager c = a;
-    cout << "printing values" << endl;
+    ResourceManager c;
+    c = move(a);
+    cout << "printing other values" << endl;
     // cout << a.get() << endl;
     // cout << b.get() << endl;
     cout << c.get() << endl;

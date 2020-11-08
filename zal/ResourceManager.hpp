@@ -36,8 +36,19 @@ public:
 
     ResourceManager& operator=(ResourceManager&& rs)
     {
+        if (&rs == this) // prevent self-copying
+        {
+            cout << "selfMoving!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+            return *this;
+        }
+        else if (!(res == nullptr)) {
+            cout << "deleting!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+            delete res;
+        }
         cout << "moving_operator" << endl;
         res = move(rs.res); // wywola konstruktor przenoszacy
+
+        rs.res = nullptr;
         return *this;
     }
 
