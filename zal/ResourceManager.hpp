@@ -14,9 +14,34 @@ public:
     res = new Resource;
   }
   ~ResourceManager(){
-    delete res;
   }
 
+    ResourceManager(const ResourceManager& rs) // copying constructor
+    {
+        cout << "copying_constr" << endl;
+        res = rs.res;
+    }
+
+    ResourceManager& operator=(const ResourceManager& rs)
+    {
+        cout << "copying_operator" << endl;
+        res = rs.res;
+        return *this;
+    }
+
+    ResourceManager(ResourceManager&& rs) // moving constructor
+    {
+        cout << "moving_constr" << endl;
+        res    = move(rs.res); // wywola konstruktor przenoszacy
+        rs.res = nullptr;
+    }
+
+    ResourceManager& operator=(ResourceManager&& rs)
+    {
+        cout << "moving_operator" << endl;
+        res = move(rs.res); // wywola konstruktor przenoszacy
+        return *this;
+    }
 
   double get()
   {

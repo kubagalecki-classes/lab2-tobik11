@@ -11,28 +11,32 @@ public:
 
     ResourceManager(const ResourceManager& rs) // copying constructor
     {
-        // cout << "copy_constr" << endl;
-        res = rs.res; // wywola konstruktor kopiujacy
+        cout << "copying_constr" << endl;
+        res = rs.res;
     }
 
     ResourceManager& operator=(const ResourceManager& rs)
     {
-        me = rs.me;
+        cout << "copying_operator" << endl;
+        res = rs.res;
         return *this;
     }
 
     ResourceManager(ResourceManager&& rs) // moving constructor
     {
-        me = rs.me;
+        cout << "moving_constr" << endl;
+        res    = move(rs.res); // wywola konstruktor przenoszacy
+        rs.res = nullptr;
     }
 
     ResourceManager& operator=(ResourceManager&& rs)
     {
-        me = rs.me;
+        cout << "moving_operator" << endl;
+        res = move(rs.res); // wywola konstruktor przenoszacy
         return *this;
     }
 
-    ~ResourceManager() { delete res; }
+    ~ResourceManager() { cout << "deconst" << endl; }
 
     double get() { return res->get(); }
 
@@ -45,8 +49,11 @@ int main()
 {
     ResourceManager a{};
 
-    ResourceManager b{a};
+    // ResourceManager b{move(a)};
 
-    cout << a.get() << endl;
-    cout << b.get() << endl;
+    ResourceManager c = move(a);
+    cout << "printing values" << endl;
+    // cout << a.get() << endl;
+    // cout << b.get() << endl;
+    cout << c.get() << endl;
 }
