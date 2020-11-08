@@ -36,7 +36,11 @@ public:
         return *this;
     }
 
-    ~ResourceManager() { cout << "deconst" << endl; }
+    ~ResourceManager()
+    {
+        cout << "deconst" << endl;
+        delete res;
+    }
 
     double get() { return res->get(); }
 
@@ -51,7 +55,7 @@ int main()
 
     // ResourceManager b{move(a)};
 
-    ResourceManager c = move(a);
+    ResourceManager c = a;
     cout << "printing values" << endl;
     // cout << a.get() << endl;
     // cout << b.get() << endl;

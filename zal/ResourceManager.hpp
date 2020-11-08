@@ -43,6 +43,12 @@ public:
         return *this;
     }
 
+    ~ResourceManager()
+    {
+        cout << "deconst" << endl;
+        delete res;
+    }
+
   double get()
   {
     return res->get();
