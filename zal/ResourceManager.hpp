@@ -8,6 +8,8 @@ using namespace std;
 
 class ResourceManager
 {
+public:
+
   ResourceManager() {
     res = new Resource;
   }
@@ -20,5 +22,7 @@ class ResourceManager
   {
     return res->get();
   }
+
+private:
     Resource* res = nullptr;
 };
