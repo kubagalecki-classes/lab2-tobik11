@@ -17,13 +17,13 @@ public:
     ResourceManager(const ResourceManager& rs) // copying constructor
     {
         cout << "copying_constr" << endl;
-        res = rs.res;
+        res = new Resource{*rs.res};
     }
 
     ResourceManager& operator=(const ResourceManager& rs)
     {
         cout << "copying_operator" << endl;
-        res = rs.res;
+        res = new Resource{*rs.res};
         return *this;
     }
 
