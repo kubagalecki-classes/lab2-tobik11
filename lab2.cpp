@@ -1,109 +1,52 @@
 
+#include "zal/include/Resource.hpp"
 #include <iostream>
 
 using namespace std;
 
-class Resource
+class ResourceManager
 {
 public:
-    Resource() : dlugosc{0}, pojemnosc{0} {}
+    ResourceManager() { res = new Resource; }
 
-    Resource(int n) : dlugosc{n}, pojemnosc{n}, num_tab{new double[n]}
+    ResourceManager(const ResourceManager& rs) // copying constructor
     {
-        for (int i = 0; i < n; i++)
-            num_tab[i] = 0.;
+        // cout << "copy_constr" << endl;
+        res = rs.res; // wywola konstruktor kopiujacy
     }
 
-    Resource(const Resource& rs) : dlugosc{rs.dlugosc}, pojemnosc{rs.pojemnosc}
+    ResourceManager& operator=(const ResourceManager& rs)
     {
-        cout << "constructing" << endl;
-        num_tab = new double[pojemnosc];
-        for (int i = 0; i < pojemnosc; i++)
-            num_tab[i] = rs.num_tab[i];
+        me = rs.me;
+        return *this;
     }
 
-    // copy by "=" operator
-    // Resource& operator=(const Resource& rs) { return *this; }
-
-    ~Resource() { delete[] num_tab; }
-
-    int getDlugosc() { return dlugosc; }
-
-    int getPojemnosc() { return pojemnosc; }
-
-    void print()
+    ResourceManager(ResourceManager&& rs) // moving constructor
     {
-        for (int i = 0; i < dlugosc; i++)
-            cout << num_tab[i] << endl;
+        me = rs.me;
     }
 
-    void zmienDlugosc(int n)
+    ResourceManager& operator=(ResourceManager&& rs)
     {
-        if (n > pojemnosc) {
-            double* temp = new double[n];
-            for (int i = 0; i < n; i++)
-                temp[i] = 0.;
-
-            for (int i = 0; i < pojemnosc; i++)
-                temp[i] = num_tab[i];
-
-            delete[] num_tab;
-            num_tab   = temp;
-            dlugosc   = n;
-            pojemnosc = n;
-        }
-        else if (n == pojemnosc) {
-            if (n > dlugosc)
-                dlugosc = n;
-        }
-        else { // n < pojemnosc
-            if (n < dlugosc) {
-                for (int i = n; i < pojemnosc; i++)
-                    num_tab[i] = 0.;
-                dlugosc = n;
-            }
-            else if (n > dlugosc) {
-                dlugosc = n;
-            }
-            else {
-                // nothing happens
-            }
-        }
+        me = rs.me;
+        return *this;
     }
 
-    double& operator[](int n)
-    {
-        if (n > dlugosc)
-            zmienDlugosc(n);
-        return num_tab[n];
-    }
+    ~ResourceManager() { delete res; }
+
+    double get() { return res->get(); }
 
 private:
-    int     dlugosc;
-    int     pojemnosc;
-    double* num_tab;
+    int       me;
+    Resource* res = nullptr;
 };
 
 int main()
 {
-    cout << "elo" << endl;
+    ResourceManager a{};
 
-    int      k = 10;
-    Resource a{k};
+    ResourceManager b{a};
 
-    for (int i = 0; i < k; i++)
-        a[i] = 4.;
-
-    a.zmienDlugosc(5);
-
-    a[1] = 5;
-    a[4] = 30;
-
-    cout << "ssss" << endl;
-    a.print();
-
-    Resource b = a;
-    Resource c{b};
-    b.print();
-    b.print();
+    cout << a.get() << endl;
+    cout << b.get() << endl;
 }
