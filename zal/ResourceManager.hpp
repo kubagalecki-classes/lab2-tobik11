@@ -18,12 +18,18 @@ public:
     {
         cout << "copying_constr" << endl;
         res = new Resource{*rs.res};
+        cout << res << endl;
     }
 
     ResourceManager& operator=(const ResourceManager& rs)
     {
+        if (!(res == nullptr)) {
+            cout << "selfDeleting" << endl;
+            delete res;
+        }
         cout << "copying_operator" << endl;
         res = new Resource{*rs.res};
+        cout << res << endl;
         return *this;
     }
 
@@ -42,7 +48,7 @@ public:
             return *this;
         }
         else if (!(res == nullptr)) {
-            cout << "deleting!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+            cout << "selfDeleting" << endl;
             delete res;
         }
         cout << "moving_operator" << endl;
@@ -55,6 +61,7 @@ public:
     ~ResourceManager()
     {
         cout << "deconst" << endl;
+        cout << res << endl;
         delete res;
     }
 
