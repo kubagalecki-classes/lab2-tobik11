@@ -13,8 +13,6 @@ public:
   ResourceManager() {
     res = new Resource;
   }
-  ~ResourceManager(){
-  }
 
     ResourceManager(const ResourceManager& rs) // copying constructor
     {
